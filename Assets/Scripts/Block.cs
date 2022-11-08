@@ -7,7 +7,7 @@ public class Block : MonoBehaviour
     [SerializeField]
     int blockLife;
 
-    string lifeText = blockLife.ToString();
+    string lifeText = blockLife.ToString(); 
     void OnCollisionEnter(Collision collision)
     {
         if ( collision.gameObject.tag == "Ball" )
