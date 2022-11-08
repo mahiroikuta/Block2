@@ -7,13 +7,13 @@ public class Block : MonoBehaviour
     [SerializeField]
     int blockLife;
 
-    string lifeText = blockLife.ToString(); 
+    // string lifeText = blockLife.ToString(); 
     void OnCollisionEnter(Collision collision)
     {
         if ( collision.gameObject.tag == "Ball" )
         {
             blockLife = blockLife - 1;
-            lifeText = blockLife.ToString();
+            // lifeText = blockLife.ToString();
         }
         if ( blockLife == 0 )
         {
