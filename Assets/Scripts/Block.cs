@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    [SerializeField]
-    int blockLife;
+    public int life;
 
-    string lifeText = blockLife.ToString();
+    public Block()
+    {
+        life = 3;
+    }
     void OnCollisionEnter(Collision collision)
     {
         if ( collision.gameObject.tag == "Ball" )
         {
-            blockLife = blockLife - 1;
-            lifeText = blockLife.ToString();
+            this.life = this.life - 1;
+            Debug.Log("ball hit block");
+            // lifeText = blockLife.ToString();
         }
-        if ( blockLife == 0 )
+        if ( this.life == 0 )
         {
             Destroy(gameObject);
         }
