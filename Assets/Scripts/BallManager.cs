@@ -4,64 +4,35 @@ using UnityEngine;
 
 public class BallManager : MonoBehaviour
 {
-    [SerializeField]
-    GameObject ball;
+    GameState _gameState;
 
-    [SerializeField]
-    GameObject ballShooter;
-
-    List<GameObject> balls = new List<GameObject>();
-    Vector3 ballBornPoint;
-
-    [SerializeField]
-    int maxBall;
-
-    [SerializeField]
-    float speed;
-
-    bool isShooting = false;
-
-    public void Shooting()
+    public void setUp(GameState gameState)
     {
-        isShooting = true;
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 shotForward = Vector3.Scale((mouseWorldPos - ballShooter.transform.position), new Vector3(1, 1, 0)).normalized;
-        GameObject clone = Instantiate(ball, ballShooter.transform.position, Quaternion.identity);
-        clone.GetComponent<Rigidbody>().velocity = shotForward * speed;
-        // ballShooter.Shooting(balls.Count, shotForward);
-        // StartCoroutine("shoot", shotForward);
+        _gameState = gameState;
     }
 
-    // IEnumerator shoot(Vector3 vec)
-    // {
-    //     foreach ( GameObject obj in balls )
-    //     {
-    //         Rigidbody rig = obj.GetComponent<Rigidbody>();
-    //         rig.velocity = vec * speed;
-    //         yield return new WaitForSeconds(0.5f);
-    //     }
-    // }
-
-    // public async void Shooting()
-    // {
-    //     isShooting = true;
-    //     Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    //     Vector3 shotForward = Vector3.Scale((mouseWorldPos - ballShooter.transform.position), new Vector3(1, 1, 0)).normalized;
-
-    //     foreach ( GameObject obj in balls )
-    //     {
-    //         Rigidbody rig = obj.GetComponent<Rigidbody>();
-    //         rig.velocity = shotForward * speed;
-    //         await Task.Delay(500);
-    //     }
-    // }
-
-    void ballBorn()
+    public GameState onUpdate()
     {
-        while ( maxBall > balls.Count )
+        return _gameState;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Debug.Log(_gameState.posConf);
+        // if ( !_gameState.posConf && collision.gameObject.tag == "Floor" )
+        // {
+        //     _gameState.ballBornPoint = collision.gameObject.transform.position;
+        //     Debug.Log(collision.gameObject.transform.position);
+        //     _gameState.posConf = true;
+        //     Destroy(gameObject);
+        // }
+        // if ( _gameState.posConf ) {
+        //     Destroy(gameObject);
+        // }
+        if ( collision.gameObject.tag == "Floor" )
         {
-            var ob = GameObject.Instantiate(ball, ballBornPoint, Quaternion.identity) as GameObject;
-            balls.Add(ob);
+            Destroy(gameObject);
         }
+
     }
 }

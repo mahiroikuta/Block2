@@ -2,41 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockManager
-{
-    [SerializeField]
-    GameObject block;
+public class BlockManager : MonoBehaviour
+{    
+    GameState _gameState;
 
-    Vector3 basePos = new Vector3 (-6f, 14f, -1f);
-    
-    List<GameObject> blocks = new List<GameObject>();
-    
-    void startSet()
+    public void setUp(GameState gameState)
     {
-        // 初期ブロック生成
-
+        _gameState = gameState;
     }
 
-    bool noBlockCheck()
+    public GameState onUpdate()
     {
-        if ( blocks.Count == 0 ) return true;
-        else return false;
+        return _gameState;
     }
 
-    bool touchBlockCheck()
+    public bool checkBlocks()
     {
-        // ブロックが規定線を超えてるか
-        if ( blocks.Count == 0 ) return true;
-        else return false;
+        return _gameState.blocks.Count==0;
+    }
+    // ブロック移動
+    public void blockMove()
+    {
+        foreach ( Block block in _gameState.blocks )
+        {
+            Transform myTransform = block.transform;
+            Vector3 pos = myTransform.position;
+            pos.y += 2;
+        }
     }
 
-    void geneBlock()
+    // string lifeText = blockLife.ToString(); 
+    void OnCollisionEnter(Collision collision)
     {
-        for ( int i=0 ; i<5 ; i++ ) {
-            Vector3 blockBornPos = basePos;
-            blockBornPos.x += 3f*i;
-            var ob = GameObject.Instantiate(block, blockBornPos, Quaternion.identity) as GameObject;
-            blocks.Add(ob);
+        if ( collision.gameObject.tag == "Ball" )
+        {
+            _gameState.blockLife = _gameState.blockLife - 1;
+            Debug.Log("ball hit block");
+            Debug.Log(_gameState.blockLife);
+            // lifeText = blockLife.ToString();
+        }
+        if ( _gameState.blockLife == 0 )
+        {
+            Destroy(gameObject);
         }
     }
 }
